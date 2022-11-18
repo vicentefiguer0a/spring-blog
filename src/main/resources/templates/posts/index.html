@@ -9,7 +9,7 @@
 
     <div th:each="post : ${posts}">
         <small th:text="${'User ID: ' + post.id}">User ID</small>
-        <h1 th:text="${post.title}">Title</h1>
+        <h3 th:text="${post.title}">Title</h3>
         <p th:text="${post.body}">Body</p>
     </div>
 

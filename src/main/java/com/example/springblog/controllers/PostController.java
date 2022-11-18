@@ -1,25 +1,26 @@
 package com.example.springblog.controllers;
 
 import com.example.springblog.models.Post;
+import com.example.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class PostController {
 
+    private final PostRepository postsDao;
+
+    public PostController(PostRepository postsDao) {
+        this.postsDao = postsDao;
+    }
+
     @GetMapping("/posts")
     public String postsIndexPage(Model model) {
-        List<Post> posts = new ArrayList<>();
-        Post post1 = new Post(1, "My First Post", "This is my first post using spring blog.");
-        Post post2 = new Post(2, "My Second Post", "This is my second post using spring blog.");
-        posts.add(post1);
-        posts.add(post2);
+        List<Post> posts = postsDao.findAll();
         model.addAttribute("posts", posts);
         return "posts/index";
     }
@@ -32,14 +33,14 @@ public class PostController {
     }
 
     @GetMapping("/posts/create")
-    @ResponseBody
     public String viewPostForm() {
-        return "Viewing create post form.";
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    @ResponseBody
-    public String submittingNewPost() {
-        return "Creating new post.";
+    public String submittingNewPost(@RequestParam(name = "post-title") String postTitle, @RequestParam(name = "post-body") String postBody, Model model) {
+        Post postCreated = new Post(postTitle, postBody);
+        postsDao.save(postCreated);
+        return "redirect:/posts";
     }
 }
