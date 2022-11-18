@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/components/head.html :: head">
+<head>
     <title>Spring-Blog | Post</title>
+    <th:block th:insert="/components/head.html :: head"></th:block>
 </head>
 <body>
     <nav th:replace="/components/navbar.html :: navbar"></nav>
 
-    <div th:if="${idsMatch}">
+    <div>
+        <small th:text="${'User ID:' + post.getId() }">User ID</small>
         <h1 th:text="${post.getTitle()}">Title</h1>
         <p th:text="${post.getBody()}">Body</p>
     </div>

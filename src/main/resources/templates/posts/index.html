@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/components/head.html :: head">
+<head>
     <title>Spring-Blog | Posts</title>
+    <th:block th:insert="/components/head.html :: head"></th:block>
 </head>
 <body>
     <nav th:replace="/components/navbar.html :: navbar"></nav>
 
     <div th:each="post : ${posts}">
+        <small th:text="${'User ID: ' + post.id}">User ID</small>
         <h1 th:text="${post.title}">Title</h1>
         <p th:text="${post.body}">Body</p>
     </div>
