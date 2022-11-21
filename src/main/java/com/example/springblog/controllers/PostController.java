@@ -1,21 +1,24 @@
 package com.example.springblog.controllers;
 
 import com.example.springblog.models.Post;
+import com.example.springblog.models.User;
 import com.example.springblog.repositories.PostRepository;
+import com.example.springblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class PostController {
 
-    private final PostRepository postsDao;
+    private PostRepository postsDao;
 
-    public PostController(PostRepository postsDao) {
+    private UserRepository usersDao;
+
+    public PostController(PostRepository postsDao, UserRepository usersDao) {
         this.postsDao = postsDao;
+        this.usersDao = usersDao;
     }
 
     @GetMapping("/posts")
@@ -27,7 +30,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String postsUserPage(@PathVariable long id, Model model) {
-        Post post = new Post(id, "My Individual Post", "This is my individual post.");
+        Post post = postsDao.getById(id);
         model.addAttribute("post", post);
         return "posts/show";
     }
@@ -38,8 +41,10 @@ public class PostController {
     }
 
     @PostMapping("/posts/create")
-    public String submittingNewPost(@RequestParam(name = "post-title") String postTitle, @RequestParam(name = "post-body") String postBody, Model model) {
+    public String submittingNewPost(@RequestParam(name = "post-title") String postTitle, @RequestParam(name = "post-body") String postBody) {
         Post postCreated = new Post(postTitle, postBody);
+        User user = usersDao.getById(1L);
+        postCreated.setUser(user);
         postsDao.save(postCreated);
         return "redirect:/posts";
     }

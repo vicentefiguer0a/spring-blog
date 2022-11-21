@@ -8,9 +8,9 @@
     <nav th:replace="/components/navbar.html :: navbar"></nav>
 
     <div>
-        <small th:text="${'User ID:' + post.getId() }">User ID</small>
-        <h1 th:text="${post.getTitle()}">Title</h1>
-        <p th:text="${post.getBody()}">Body</p>
+        <small th:text="${'User email:' + post.user.email}">User email</small>
+        <h1 th:text="${post.title}">Title</h1>
+        <p th:text="${post.body}">Body</p>
     </div>
 
     <footer th:replace="/components/footer.html :: footer"></footer>
