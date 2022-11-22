@@ -48,4 +48,18 @@ public class PostController {
         postsDao.save(postCreated);
         return "redirect:/posts";
     }
+
+    @GetMapping("/posts/{id}/edit")
+    public String editUserPost(@PathVariable long id, Model model) {
+        model.addAttribute("post", postsDao.getReferenceById(id));
+        return "posts/edit-post";
+    }
+
+    @PostMapping("/posts/edit")
+    public String submitEditedPost(@ModelAttribute Post post) {
+        User user = usersDao.getById(1L);
+        post.setUser(user);
+        postsDao.save(post);
+        return "redirect:/posts";
+    }
 }
