@@ -70,4 +70,5 @@ public class PostController {
         postsDao.save(post);
         return "redirect:/posts";
     }
+
 }

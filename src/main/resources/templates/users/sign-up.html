@@ -2,12 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8"/>
-    <title></title>
+    <th:block th:insert="/components/head.html :: head"></th:block>
+    <title>Register</title>
 </head>
 <body>
+    <nav th:replace="/components/navbar.html :: navbar"></nav>
+
     <h1>Sign Up</h1>
-    <form th:action="@{/sign-up}" method="POST" th:object="${user}">
+    <form th:action="@{/sign-up}" method="POST" th:object="${user}" class="w-25" style="margin: 3em;">
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input th:field="*{email}" id="email" type="text" class="form-control" />
