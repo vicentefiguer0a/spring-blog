@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:insert="/components/head.html :: head"></th:block>
     <title>Create a Post</title>
@@ -9,14 +10,14 @@
 
     <h1>Create A Post</h1>
 
-    <form action="/posts/create" method="POST" style="margin: 3em;">
+    <form th:action="@{/posts/create}" th:method="POST" th:object="${post}" style="margin: 3em;">
         <div class="mb-3">
-            <label for="post-title" class="form-label">Title</label>
-            <input id="post-title" name="post-title" type="text" class="form-control">
+            <label for="title" class="form-label">Title</label>
+            <input id="title" th:field="*{title}" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="post-body" class="form-label">Body</label>
-            <textarea id="post-body" name="post-body" class="form-control" style="height: 100px"></textarea>
+            <label for="body" class="form-label">Body</label>
+            <textarea id="body" th:field="*{body}" class="form-control" style="height: 100px"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Post</button>
     </form>

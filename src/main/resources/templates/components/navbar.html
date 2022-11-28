@@ -13,9 +13,8 @@
                     <a class="nav-link" href="#">About</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <form th:action="@{/logout}" th:method="POST" class="d-flex" sec:authorize="isAuthenticated()">
+                <button class="btn btn-danger">Logout</button>
             </form>
         </div>
     </div>

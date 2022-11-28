@@ -5,6 +5,7 @@ import com.example.springblog.models.User;
 import com.example.springblog.repositories.PostRepository;
 import com.example.springblog.repositories.UserRepository;
 import com.example.springblog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +41,18 @@ public class PostController {
     }
 
     @GetMapping("/posts/create")
-    public String viewPostForm() {
+    public String viewPostForm(Model model) {
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String submittingNewPost(@RequestParam(name = "post-title") String postTitle, @RequestParam(name = "post-body") String postBody) {
-        Post postCreated = new Post(postTitle, postBody);
-        User user = usersDao.getById(1L);
-        postCreated.setUser(user);
-        postsDao.save(postCreated);
+    public String submittingNewPost(@ModelAttribute Post post) {
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        post.setUser(loggedInUser);
+        postsDao.save(post);
 
-        emailService.prepareAndSend(postCreated, "New Post Created!", "A new post has been created with the title of " + postTitle);
+        emailService.prepareAndSend(post, "New Post Created!", "A new post has been created with the title of " + post.getTitle());
 
         return "redirect:/posts";
     }
